@@ -3,6 +3,29 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ApolloClient, InMemoryCache, HttpLink, gql } from '@apollo/client';
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({
+    uri: 'http://localhost:4000/api/graphql'
+  })
+})
+
+const query = gql`
+  query {
+    country(id: 2) {
+      id,
+      name,
+      abbreviation
+    }
+  }
+`
+
+client.query({ query })
+  .then(res => {
+    console.log(res.data)
+  })
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
