@@ -2,9 +2,9 @@ import logo from './logo.svg';
 import './App.css';
 import { gql, useQuery } from '@apollo/client';
 
-const COUNTRY = gql`
+const ALL_COUNTRIES = gql`
   query {
-    country(id: 2) {
+    countries {
       id,
       name,
       abbreviation
@@ -13,12 +13,9 @@ const COUNTRY = gql`
 `
 
 function App() {
-  const { data, error, loading } = useQuery(COUNTRY)
+  const { data, error, loading } = useQuery(ALL_COUNTRIES)
 
   if (error) return <span style='color: red'>{error}</span>
-
-  console.log(data)
-
 
   return (
     <div className="App">
@@ -29,9 +26,9 @@ function App() {
           ? <p>Loading...</p>
           : (
             <>
-              <p>Country</p>
+              <p>Countries</p>
               {
-                data && data.country.name
+                data && data.countries.map(country => country.name).join(', ')
               }
             </>
           )
